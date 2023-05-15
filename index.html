@@ -1,42 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Video Duration</title>
+<title>Streaming duration</title>
+<script>
+window.onload = function() {
+var video = document.getElementById('stream-video');
+video.onloadedmetadata = function() {
+var duration = video.duration;
+var durationMinutes = Math.floor(duration / 60);
+var durationSeconds = Math.floor(duration % 60);
+var durationText = durationMinutes + ':' + ('0' + durationSeconds).slice(-2);
+document.getElementById('duration').innerHTML = durationText;
+};
+video.src = 'https://www.youtube.com/embed/3qH50yw5OuA';
+video.load();
+};
+</script>
 </head>
 <body>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3qH50yw5OuA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-<p>
-Duración del video: <span id="dur"></span>
-</p>
-
-<script>
-var tag = document.createElement('script');
-
-tag.src = 'https://www.youtube.com/iframe_api';
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-var interval = setInterval(function() {
-var player = new YT.Player('player', {
-events: {
-'onReady': onPlayerReady
-}
-});
-
-function onPlayerReady(event) {
-clearInterval(interval);
-
-var duration = player.getDuration();
-var hours = Math.floor(duration / 3600);
-var minutes = Math.floor((duration - (hours * 3600)) / 60);
-var seconds = Math.floor(duration - (hours * 3600) - (minutes * 60));
-
-var durationString = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
-document.getElementById('dur').innerHTML = durationString;
-}
-}, 500);
-<script>
+<h1>Streaming duration</h1>
+<video id="stream-video" style="display:none;"></video>
+<p>The duration of the streaming is: <span id="duration"></span></p>
 </body>
 </html>
